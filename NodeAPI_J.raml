@@ -23,16 +23,16 @@ types:
   Receivers: !include schemas/receivers.json
   ErrorSchema: !include schemas/error.json
 documentation:
-  - title: Overview
+  - title: 概要
     content: |
       Node APIは、そのノードがフローやソースなどのNMOSリソースを提供できるかどうかに関わらず、システム内の各NMOSノードによって公開されます。  Node APIによって公開されたデータは、Registration APIを介して（分散された）レジストリに入力するために使用されます。  小規模なデプロイメントでは、Peer to Peer仕様を実装しているノードから必要に応じて、Node APIを直接取得します。
-  - title: Further Documentation
+  - title: その他のドキュメント
     content: |
-      Further normative documentation covering the behaviour of this API is contained in the [docs](../docs) folder of this repository.
+      このAPIの動作をカバーするその他の規範的なドキュメントは、このリポジトリのdocsフォルダに含まれています。（https://amwa-tv.github.io/nmos-discovery-registration/tags/v1.3/docs/）
 /:
   displayName: Base
   get:
-    description: List of paths available from this API
+    description: このAPIから利用可能なパスのリスト
     responses:
       200:
         body:
@@ -41,7 +41,7 @@ documentation:
 /self:
   displayName: Self
   get:
-    description: Get information about this Node
+    description: このノードに関する情報を取得する
     responses:
       200:
         body:
@@ -50,7 +50,7 @@ documentation:
 /sources:
   displayName: Sources
   get:
-    description: List Sources
+    description: ソースのリスト
     responses:
       200:
         body:
@@ -62,7 +62,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single Source
+      description: 単一のソースを取得する
       responses:
         200:
           body:
