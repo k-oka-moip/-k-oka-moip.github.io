@@ -53,7 +53,7 @@ documentation:
 /sources:
   displayName: Sources
   get:
-    description: ソースのリスト
+    description: Source の一覧表示
     responses:
       200:
         body:
@@ -65,7 +65,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: 単一のソースを取得する
+      description: 一つの Source を取得する
       responses:
         200:
           body:
@@ -85,7 +85,7 @@ documentation:
 /flows:
   displayName: Flows
   get:
-    description: List Flows
+    description: Flow の一覧表示
     responses:
       200:
         body:
@@ -97,7 +97,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single Flow
+      description: 一つの Flow を取得
       responses:
         200:
           body:
@@ -117,7 +117,7 @@ documentation:
 /devices:
   displayName: Devices
   get:
-    description: List Devices
+    description: Device の一覧表示
     responses:
       200:
         body:
@@ -129,7 +129,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single Device
+      description:  一つの Device を取得
       responses:
         200:
           body:
@@ -149,7 +149,7 @@ documentation:
 /senders:
   displayName: Senders
   get:
-    description: List Senders
+    description: Sender の一覧表示
     responses:
       200:
         body:
@@ -161,7 +161,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single Sender
+      description: 一つの Sender を取得
       responses:
         200:
           body:
@@ -181,7 +181,7 @@ documentation:
 /receivers:
   displayName: Receivers
   get:
-    description: List Receivers
+    description: Receiver の一覧表示
     responses:
       200:
         body:
@@ -193,7 +193,7 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single Receiver
+      description: 一つの Receiver を取得
       responses:
         200:
           body:
