@@ -23,21 +23,21 @@ types:
   ErrorSchema: !include schemas/error.json
 traits:
   paged:
-    description: API resource supporting pagination of results
+    description: 結果のページ分割をサポートする API リソース
     queryParameters:
       paging.since:
-        description: Return only the results which have been created/updated since the time specified (non-inclusive) (seconds:nanoseconds)
+        description: 指定された時間以降に作成/更新された結果のみを返します（包括的ではありません）（秒：ナノ秒）
         type: string
         pattern: "^[0-9]+:[0-9]+$"
       paging.until:
-        description: Return only the results which were created/updated up until the time specified (inclusive) (seconds:nanoseconds)
+        description: 指定された時間（秒を含む）までに作成/更新された結果のみを返します（秒：ナノ秒）
         type: string
         pattern: "^[0-9]+:[0-9]+$"
       paging.limit:
-        description: Restrict the response to the specified number of results. Implementations may specify their own default and maximum for the limit
+        description: 指定された数の結果に応答を制限します。実装は、制限に対して独自のデフォルトと最大値を指定できます
         type: integer
       paging.order:
-        description: Specify whether paging should be based upon initial resource creation time, or when it was last modified. In both cases the response should be provided in descending order
+        description: ページングを最初のリソース作成時間に基づくか、最後に変更した日時に基づくかを指定します。どちらの場合も、応答は降順で提供する必要があります
         type: string
         enum: ["create", "update"]
         default: "update"
@@ -45,34 +45,34 @@ traits:
       200:
         headers:
           Link:
-            description: Provides references to cursors for paging. The 'rel' attribute may be one of 'next', 'prev', 'first' or 'last'
+            description: ページング用のカーソルへの参照を提供します。「rel」属性は、「next」、「prev」、「first」、または「last」のいずれかになります。
             type: string
             example: <http://example.api.com/x-nmos/query/{version}/nodes/?paging.since=1441716120:318744030&paging.limit=20>; rel="next", <http://example.api.com/x-nmos/query/{version}/nodes/?paging.until=1441716353:6839634&paging.limit=20>; rel="prev"
           X-Paging-Limit:
-            description: Identifies the current limit being used for paging. This may not match the requested value if the requested value was too high for the implementation
+            description: ページングに使用されている現在の制限を識別します。要求された値が実装に対して高すぎる場合、要求された値と一致しない可能性があります
             type: integer
           X-Paging-Since:
-            description: Identifies the current value of the query parameter 'paging.since' in use, or if not specified identifies what value it would have had to return this data set. This value may be re-used as the paging.until value of a query to return the previous page of results. Combining this with the X-Paging-Until header value provides the absolute time bounds of the current returned data set.
+            description: 使用中のクエリパラメータ 'paging.since' の現在の値を識別します。指定されていない場合は、このデータセットを返すために必要な値を識別します。この値は、結果の前のページを返すためのクエリの paging.until 値として再利用することができます。これを X-Paging-Until ヘッダ値と組み合わせることで、現在返されているデータセットの絶対的な時間境界が得られます。
             type: string
             example: 1441716353:6839634
           X-Paging-Until:
-            description: Identifies the current value of the query parameter 'paging.until' in use, or if not specified identifies what value it would have had to return this data set. This value may be re-used as the paging.since value of a query to return the next page of results. Combining this with the X-Paging-Since header value provides the absolute time bounds of the current returned data set.
+            description: 使用中のクエリパラメータ 'paging.until' の現在の値を識別します。指定されていない場合は、このデータセットを返すために必要な値を識別します。この値は、結果の次のページを返すためのクエリの paging.since 値として再利用することができます。これをX-Paging-Sinceヘッダ値と組み合わせることで、現在返されているデータセットの絶対的な時間境界が得られます。
             type: string
             example: 1441716120:318744030
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
   downgrade:
-    description: API resource supporting the return of data which matches an older minor API version than the request would return by default.
+    description: APIリソースは、リクエストがデフォルトで返すよりも古いマイナーAPIのバージョンにマッチするデータの返却をサポートする。
     queryParameters:
       query.downgrade:
-        description: Minimum API version to return resources from if they exists within the registry
+        description: レジストリ内にリソースが存在する場合には、最小のAPIバージョンのリソースを返す
         type: string
         pattern: "^v[0-9]+.[0-9]+$"
     responses:
       400:
-        description: The requested downgrade query moves between major API versions which is not permitted.
+        description: ダウングレードクエリ応答は、メジャーAPIバージョン間との置き換えは許可されていません。
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在のところこの実装ではサポートされていません。
   rql:
     description: This resource MAY support advanced query formats using the Resource Query Language (RQL) syntax
     queryParameters:
@@ -109,18 +109,22 @@ traits:
       501:
         description: The query parameters specified are not currently supported by this implementation.
 documentation:
-  - title: Overview
+  - title: 概要
     content: |
-      The Query API is exposed by NMOS discovery Nodes. It is used to expose the contents of the (distributed) registry to all Nodes on the network. In smaller deployments where no such registry is available, Nodes with their own control capabilities fall back to interrogating Nodes directly using the Peer to Peer specification. This is a Read Only API.
+    Query APIは、NMOSディスカバリーノードによって公開されます。
+    これは、ネットワーク上のすべてのノードに(分散された)レジストリの内容を公開するために使用されます。
+    そのようなレジストリが利用できない小規模なデプロイメントでは、独自の制御機能を持つノードは、Peer to Peer仕様を使用して直接ノードを問い合わせることにフォールバックします。
+    これは読み取り専用APIです。
 
-      Attributes defined as 'Optional' in schemas MUST be returned by the Query API if they exist within the registry. The presence declaration relates more to whether it is required for them to be registered at the Registration API side, or presented via the Node API.
-  - title: Further Documentation
+    （必須）スキーマで'Optional'として定義されている属性は、レジストリ内に存在する場合、Query APIによって返されなければなりません[MUST]。
+    プレゼンス（存在）宣言は、Registration API側で登録する必要があるか、Node APIを介して提示する必要があるかに関係しています。
+  - title: その他のドキュメント
     content: |
-      Further normative documentation covering the behaviour of this API is contained in the [docs](../docs) folder of this repository.
+    このAPIの動作をカバーするその他の規範的なドキュメントは、このリポジトリのdocsフォルダに含まれています。 （https://amwa-tv.github.io/nmos-discovery-registration/tags/v1.3/docs/
 /:
   displayName: Base
   get:
-    description: List of paths available from this API
+    description: このAPIから利用可能なパスのリスト
     responses:
       200:
         body:
@@ -131,8 +135,8 @@ documentation:
   get:
     is: [paged, rql, downgrade]
     description: |
-      List Nodes.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+    ノードを一覧表示します。
+      NB: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -145,7 +149,7 @@ documentation:
           example: !include ../examples/queryapi-nodes-get-200.json
           type: Nodes
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{nodeId}:
