@@ -1,0 +1,1055 @@
+<!DOCTYPE HTML><html><head><title>Node API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/raml2html/raml2html 7.6.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+  $('.page-header pre code, .top-resource-description pre code, .modal-body pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+
+  $('[data-toggle]').click(function() {
+    var selector = $(this).data('target') + ' pre code';
+    $(selector).each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+  });
+
+  // open modal on hashes like #_action_get
+  $(window).bind('hashchange', function(e) {
+    var anchor_id = document.location.hash.substr(1); //strip #
+    var element = $('#' + anchor_id);
+
+    // do we have such element + is it a modal?  --> show it
+    if (element.length && element.hasClass('modal')) {
+      element.modal('show');
+    }
+  });
+
+  // execute hashchange on first page load
+  $(window).trigger('hashchange');
+
+  // remove url fragment on modal hide
+  $('.modal').on('hidden.bs.modal', function() {
+    try {
+      if (history && history.replaceState) {
+          history.replaceState({}, '', '#');
+      }
+    } catch(e) {}
+  });
+});
+    </script><style>
+      .hljs {
+  background: transparent;
+}
+.parent {
+  color: #999;
+}
+.list-group-item > .badge {
+  float: none;
+  margin-right: 6px;
+}
+.panel-title > .methods {
+  float: right;
+}
+.badge {
+  border-radius: 0;
+  text-transform: uppercase;
+  width: 70px;
+  font-weight: normal;
+  color: #f3f3f6;
+  line-height: normal;
+}
+.badge_get {
+  background-color: #63a8e2;
+}
+.badge_post {
+  background-color: #6cbd7d;
+}
+.badge_put {
+  background-color: #22bac4;
+}
+.badge_delete {
+  background-color: #d26460;
+}
+.badge_patch {
+  background-color: #ccc444;
+}
+.list-group,
+.panel-group {
+  margin-bottom: 0;
+}
+.panel-group .panel+.panel-white {
+  margin-top: 0;
+}
+.panel-group .panel-white {
+  border-bottom: 1px solid #F5F5F5;
+  border-radius: 0;
+}
+.panel-white:last-child {
+  border-bottom-color: white;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.panel-white .panel-heading {
+  background: white;
+}
+.tab-pane ul {
+  padding-left: 2em;
+}
+.tab-pane h1 {
+  font-size: 1.3em;
+}
+.tab-pane h2 {
+  font-size: 1.2em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+}
+.tab-pane h3 {
+  font-size: 1.1em;
+}
+.tab-content {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+#sidebar {
+  margin-top: 30px;
+  padding-right: 5px;
+  overflow: auto;
+  height: 90%;
+}
+.top-resource-description {
+  border-bottom: 1px solid #ddd;
+  background: #fcfcfc;
+  padding: 15px 15px 0 15px;
+  margin: -15px -15px 10px -15px;
+}
+.resource-description {
+  border-bottom: 1px solid #fcfcfc;
+  background: #fcfcfc;
+  padding: 15px 15px 0 15px;
+  margin: -15px -15px 10px -15px;
+}
+.resource-description p:last-child {
+  margin: 0;
+}
+.list-group .badge {
+  float: left;
+}
+.method_description {
+  margin-left: 85px;
+}
+.method_description p:last-child {
+  margin: 0;
+}
+.list-group-item {
+  cursor: pointer;
+}
+.list-group-item:hover {
+  background-color: #f5f5f5;
+}
+pre code {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
+.items {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+}
+.examples {
+  margin-left: 0.5em;
+}
+.resource-modal li > ul {
+  margin-bottom: 1em;
+}
+.required {
+  color: #f00;
+}
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>Node API documentation <small>version v1.3</small></h1><p>http://example.api.com/x-nmos/node/{version}</p><ul><li><strong>version</strong>: <em><span class="required">required</span>(v1.3)</em></li></ul><h3><a href="#">概要</a></h3></div><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Base</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_"><span class="parent"></span>/</a> <span class="methods"><a href="#_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List of paths available from this API</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/</h4></div><div class="modal-body"><div class="alert alert-info"><p>List of paths available from this API</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "Describes the Node API base resource",
+  "title": "Node API base resource",
+  "items": {
+    "type": "string",
+    "enum": [
+      "self/",
+      "sources/",
+      "flows/",
+      "devices/",
+      "senders/",
+      "receivers/"
+    ]
+  },
+  "minItems": 6,
+  "maxItems": 6,
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-base-get-200.json</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="self" class="panel-title">Self</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_self"><span class="parent"></span>/self</a> <span class="methods"><a href="#self_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_self" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#self_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get information about this Node</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="self_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/self</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get information about this Node</p></div><ul class="nav nav-tabs"><li class="active"><a href="#self_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="self_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the Node and the services which run on it",
+  "title": "Node resource",
+  "allOf": [
+    { "$ref": "resource_core.json" },
+    {
+      "type": "object",
+      "required": [
+        "href",
+        "caps",
+        "api",
+        "services",
+        "clocks",
+        "interfaces"
+      ],
+      "properties": {
+        "href": {
+          "description": "HTTP access href for the Node&#39;s API (deprecated)",
+          "type": "string",
+          "format": "uri"
+        },
+        "hostname": {
+          "description": "Node hostname (optional, deprecated)",
+          "type": "string",
+          "format": "hostname"
+        },
+        "api": {
+          "description": "URL fragments required to connect to the Node API",
+          "type": "object",
+          "required": ["versions", "endpoints"],
+          "properties": {
+            "versions": {
+              "description": "Supported API versions running on this Node",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^v[0-9]+\\.[0-9]+$"
+              }
+            },
+            "endpoints": {
+              "description": "Host, port and protocol details required to connect to the API",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["host", "port", "protocol"],
+                "properties": {
+                  "host": {
+                    "type": "string",
+                    "description": "IP address or hostname which the Node API is running on",
+                    "anyOf": [
+                      {"format": "hostname"},
+                      {"format": "ipv4"},
+                      {"format": "ipv6"}
+                    ]
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "Port number which the Node API is running on",
+                    "minimum": 1,
+                    "maximum": 65535
+                  },
+                  "protocol": {
+                    "type": "string",
+                    "description": "Protocol supported by this instance of the Node API",
+                    "enum": ["http", "https"]
+                  },
+                  "authorization": {
+                    "type": "boolean",
+                    "description": "This endpoint requires authorization",
+                    "default": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "caps": {
+          "description": "Capabilities (not yet defined)",
+          "type": "object"
+        },
+        "services": {
+          "description": "Array of objects containing a URN format type and href",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["href", "type"],
+            "properties": {
+              "href": {
+                "type": "string",
+                "description": "URL to reach a service running on the Node",
+                "format": "uri"
+              },
+              "type": {
+                "type": "string",
+                "description": "URN identifying the type of service",
+                "format": "uri"
+              },
+              "authorization": {
+                "type": "boolean",
+                "description": "This endpoint requires authorization",
+                "default": false
+              }
+            }
+          }
+        },
+        "clocks": {
+          "description": "Clocks made available to Devices owned by this Node",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "clock_internal.json" },
+              { "$ref": "clock_ptp.json" }
+            ]
+          }
+        },
+        "interfaces": {
+          "description":"Network interfaces made available to devices owned by this Node. Port IDs and Chassis IDs are used to inform topology discovery via IS-06, and require that interfaces implement ARP at a minimum, and ideally LLDP.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["chassis_id", "port_id", "name"],
+            "properties": {
+              "chassis_id": {
+                "description": "Chassis ID of the interface, as signalled in LLDP from this node. Set to null where LLDP is unsuitable for use (ie. virtualised environments)",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^([0-9a-f]{2}-){5}([0-9a-f]{2})$",
+                    "description": "When the Chassis ID is a MAC address, use this format"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "When the Chassis ID is anything other than a MAC address, a freeform string may be used"
+                  },
+                  {
+                    "type": "null",
+                    "description": "When the Chassis ID is unavailable it should be set to null"
+                  }
+                ]
+              },
+              "port_id": {
+                "description": "Port ID of the interface, as signalled in LLDP or via ARP responses from this node. Must be a MAC address",
+                "type": "string",
+                "pattern": "^([0-9a-f]{2}-){5}([0-9a-f]{2})$"
+              },
+              "name": {
+                "description": "Name of the interface (unique in scope of this node).  This attribute is used by sub-resources of this node such as senders and receivers to refer to interfaces to which they are bound.",
+                "type": "string"
+              },
+              "attached_network_device": {
+                "type": "object",
+                "required": ["chassis_id", "port_id"],
+                "properties": {
+                  "chassis_id": {
+                    "description": "Chassis ID of the attached network device, as signalled in LLDP received by this Node.",
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2}-){5}([0-9a-f]{2})$",
+                        "description": "When the Chassis ID is a MAC address, use this format"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^.+$",
+                        "description": "When the Chassis ID is anything other than a MAC address, a freeform string may be used"
+                      }
+                    ]
+                  },
+                  "port_id": {
+                    "description": "Port ID of the attached network device, as signalled in LLDP received by this Node.",
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2}-){5}([0-9a-f]{2})$",
+                        "description": "When the Port ID is a MAC address, use this format"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^.+$",
+                        "description": "When the Port ID is anything other than a MAC address, a freeform string may be used"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-self-get-200.json</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="sources" class="panel-title">Sources</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sources"><span class="parent"></span>/sources</a> <span class="methods"><a href="#sources_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_sources" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sources_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List Sources</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sources_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/sources</h4></div><div class="modal-body"><div class="alert alert-info"><p>List Sources</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sources_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sources_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "A list of Source resources",
+  "title": "Collection of Sources",
+  "items": {
+    "$ref": "source.json"
+  },
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-sources-get-200.json</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_sources__sourceid_"><span class="parent">/sources</span>/{sourceId}</a> <span class="methods"><a href="#sources__sourceid__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_sources__sourceid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#sources__sourceid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single Source</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="sources__sourceid__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/sources</span>/{sourceId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single Source</p></div><ul class="nav nav-tabs"><li class="active"><a href="#sources__sourceid__get_request" data-toggle="tab">Request</a></li><li><a href="#sources__sourceid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sources__sourceid__get_request"><h3>URI Parameters</h3><ul><li><strong>sourceId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="sources__sourceid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes a Source",
+  "title": "Source resource",
+  "oneOf": [
+    { "$ref": "source_generic.json" },
+    { "$ref": "source_audio.json" },
+    { "$ref": "source_data.json" }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-sourceid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Source ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Source ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/sources/4569cea2-ab63-4f97-8dd1-bad4669ea5e4</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="flows" class="panel-title">Flows</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_flows"><span class="parent"></span>/flows</a> <span class="methods"><a href="#flows_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_flows" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#flows_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List Flows</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="flows_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/flows</h4></div><div class="modal-body"><div class="alert alert-info"><p>List Flows</p></div><ul class="nav nav-tabs"><li class="active"><a href="#flows_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="flows_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "A list of Flow resources",
+  "title": "Collection of Flows",
+  "items": {
+    "$ref": "flow.json"
+  },
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-flows-get-200.json</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_flows__flowid_"><span class="parent">/flows</span>/{flowId}</a> <span class="methods"><a href="#flows__flowid__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_flows__flowid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#flows__flowid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single Flow</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="flows__flowid__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/flows</span>/{flowId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single Flow</p></div><ul class="nav nav-tabs"><li class="active"><a href="#flows__flowid__get_request" data-toggle="tab">Request</a></li><li><a href="#flows__flowid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="flows__flowid__get_request"><h3>URI Parameters</h3><ul><li><strong>flowId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="flows__flowid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes a Flow",
+  "title": "Flow resource",
+  "anyOf": [
+    { "$ref": "flow_video_raw.json" },
+    { "$ref": "flow_video_coded.json" },
+    { "$ref": "flow_audio_raw.json" },
+    { "$ref": "flow_audio_coded.json" },
+    { "$ref": "flow_data.json" },
+    { "$ref": "flow_sdianc_data.json" },
+    { "$ref": "flow_json_data.json" },
+    { "$ref": "flow_mux.json" }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-flowid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Flow ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Flow ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/flows/5fbec3b1-1b0f-417d-9059-8b94a47197ed</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="devices" class="panel-title">Devices</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_devices"><span class="parent"></span>/devices</a> <span class="methods"><a href="#devices_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_devices" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#devices_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List Devices</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="devices_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/devices</h4></div><div class="modal-body"><div class="alert alert-info"><p>List Devices</p></div><ul class="nav nav-tabs"><li class="active"><a href="#devices_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="devices_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "A list of Device resources",
+  "title": "Collection of Devices",
+  "items": {
+    "$ref": "device.json"
+  },
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-devices-get-200.json</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_devices__deviceid_"><span class="parent">/devices</span>/{deviceId}</a> <span class="methods"><a href="#devices__deviceid__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_devices__deviceid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#devices__deviceid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single Device</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="devices__deviceid__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/devices</span>/{deviceId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single Device</p></div><ul class="nav nav-tabs"><li class="active"><a href="#devices__deviceid__get_request" data-toggle="tab">Request</a></li><li><a href="#devices__deviceid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="devices__deviceid__get_request"><h3>URI Parameters</h3><ul><li><strong>deviceId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="devices__deviceid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes a Device",
+  "title": "Device resource",
+  "allOf": [
+    { "$ref": "resource_core.json" },
+    {
+      "type": "object",
+      "required": [
+        "type",
+        "node_id",
+        "senders",
+        "receivers",
+        "controls"
+      ],
+      "properties": {
+        "type": {
+          "description": "Device type URN",
+          "type": "string",
+          "oneOf": [
+            {
+              "pattern": "^urn:x-nmos:device:"
+            },
+            {
+              "not": {
+                "pattern": "^urn:x-nmos:"
+              }
+            }
+          ],
+          "format": "uri"
+        },
+        "node_id": {
+          "description": "Globally unique identifier for the Node which initially created the Device. This attribute is used to ensure referential integrity by registry implementations.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "senders": {
+          "description": "UUIDs of Senders attached to the Device (deprecated)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          }
+        },
+        "receivers": {
+          "description": "UUIDs of Receivers attached to the Device (deprecated)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          }
+        },
+        "controls": {
+          "description": "Control endpoints exposed for the Device",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["href", "type"],
+            "properties": {
+              "href": {
+                "type": "string",
+                "description": "URL to reach a control endpoint, whether http or otherwise",
+                "format": "uri"
+              },
+              "type": {
+                "type": "string",
+                "description": "URN identifying the control format",
+                "format": "uri"
+              },
+              "authorization": {
+                "type": "boolean",
+                "description": "This endpoint requires authorization",
+                "default": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-deviceid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Device ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Device ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/devices/67c25159-ce25-4000-a66c-f31fff890265</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="senders" class="panel-title">Senders</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_senders"><span class="parent"></span>/senders</a> <span class="methods"><a href="#senders_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_senders" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#senders_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List Senders</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="senders_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/senders</h4></div><div class="modal-body"><div class="alert alert-info"><p>List Senders</p></div><ul class="nav nav-tabs"><li class="active"><a href="#senders_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="senders_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "A list of Sender resources",
+  "title": "Collection of Senders",
+  "items": {
+    "$ref": "sender.json"
+  },
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-senders-get-200.json</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_senders__senderid_"><span class="parent">/senders</span>/{senderId}</a> <span class="methods"><a href="#senders__senderid__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_senders__senderid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#senders__senderid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single Sender</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="senders__senderid__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/senders</span>/{senderId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single Sender</p></div><ul class="nav nav-tabs"><li class="active"><a href="#senders__senderid__get_request" data-toggle="tab">Request</a></li><li><a href="#senders__senderid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="senders__senderid__get_request"><h3>URI Parameters</h3><ul><li><strong>senderId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="senders__senderid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes a sender",
+  "title": "Sender resource",
+  "allOf": [
+    { "$ref": "resource_core.json" },
+    {
+      "type": "object",
+      "required": [
+        "flow_id",
+        "transport",
+        "device_id",
+        "manifest_href",
+        "interface_bindings",
+        "subscription"
+      ],
+      "properties": {
+        "caps": {
+          "description": "Capabilities of this sender",
+          "type": "object",
+          "properties":{
+          }
+        },
+        "flow_id": {
+          "description": "ID of the Flow currently passing via this Sender",
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "default": null
+        },
+        "transport": {
+          "description": "Transport type used by the Sender in URN format",
+          "type": "string",
+          "oneOf": [
+            {
+              "pattern": "^urn:x-nmos:transport:"
+            },
+            {
+              "not": {
+                "pattern": "^urn:x-nmos:"
+              }
+            }
+          ],
+          "format": "uri"
+        },
+        "device_id": {
+          "description": "Device ID which this Sender forms part of. This attribute is used to ensure referential integrity by registry implementations.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "manifest_href": {
+          "description": "HTTP(S) accessible URL to a file describing how to connect to the Sender.",
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "interface_bindings": {
+          "description": "Binding of Sender egress ports to interfaces on the parent Node.",
+          "type": "array",
+          "items": {
+            "type":"string"
+          }
+        },
+        "subscription": {
+          "description": "Object containing the &#39;receiver_id&#39; currently subscribed to (unicast only).",
+          "type": "object",
+          "required": ["receiver_id", "active"],
+          "properties": {
+            "receiver_id": {
+              "type": ["string", "null"],
+              "description": "UUID of the Receiver that this Sender is currently subscribed to",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "default": null
+            },
+            "active": {
+              "type": "boolean",
+              "description": "Sender is enabled and configured to send data",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-senderid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Sender ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Sender ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/senders/d7aa5a30-681d-4e72-92fb-f0ba0f6f4c3e</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="receivers" class="panel-title">Receivers</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_receivers"><span class="parent"></span>/receivers</a> <span class="methods"><a href="#receivers_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_receivers" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#receivers_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>List Receivers</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="receivers_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/receivers</h4></div><div class="modal-body"><div class="alert alert-info"><p>List Receivers</p></div><ul class="nav nav-tabs"><li class="active"><a href="#receivers_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="receivers_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "A list of Receiver resources",
+  "title": "Collection of Receivers",
+  "items": {
+    "$ref": "receiver.json"
+  },
+  "uniqueItems": true
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-receivers-get-200.json</code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_receivers__receiverid_"><span class="parent">/receivers</span>/{receiverId}</a> <span class="methods"><a href="#receivers__receiverid__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_receivers__receiverid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#receivers__receiverid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Get a single Receiver</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="receivers__receiverid__get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/receivers</span>/{receiverId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Get a single Receiver</p></div><ul class="nav nav-tabs"><li class="active"><a href="#receivers__receiverid__get_request" data-toggle="tab">Request</a></li><li><a href="#receivers__receiverid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="receivers__receiverid__get_request"><h3>URI Parameters</h3><ul><li><strong>receiverId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="receivers__receiverid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes a Receiver",
+  "title": "Receiver resource",
+  "oneOf": [
+    { "$ref": "receiver_video.json" },
+    { "$ref": "receiver_audio.json" },
+    { "$ref": "receiver_data.json" },
+    { "$ref": "receiver_mux.json" }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-receiverid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Receiver ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Receiver ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/receivers/1eb53d65-ac83-441c-86f6-9b27df30ef0c</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_receivers__receiverid__target"><span class="parent">/receivers/{receiverId}</span>/target</a> <span class="methods"><a href="#receivers__receiverid__target_options"><span class="badge badge_options">options</span></a> <a href="#receivers__receiverid__target_put"><span class="badge badge_put">put</span></a></span></h4></div><div id="panel_receivers__receiverid__target" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#receivers__receiverid__target_options'" class="list-group-item"><span class="badge badge_options">options</span><div class="method_description"><p>A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#receivers__receiverid__target_put'" class="list-group-item"><span class="badge badge_put">put</span><div class="method_description"><p>Request a change to a Receiver&#39;s subscription (deprecated)</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="receivers__receiverid__target_options"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_options">options</span> <span class="parent">/receivers/{receiverId}</span>/target</h4></div><div class="modal-body"><div class="alert alert-info"><p>A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes</p></div><ul class="nav nav-tabs"><li class="active"><a href="#receivers__receiverid__target_options_request" data-toggle="tab">Request</a></li><li><a href="#receivers__receiverid__target_options_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="receivers__receiverid__target_options_request"><h3>URI Parameters</h3><ul><li><strong>receiverId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul></div><div class="tab-pane" id="receivers__receiverid__target_options_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h2>HTTP status code <a href="http://httpstatus.es/403" target="_blank">403</a></h2></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="receivers__receiverid__target_put"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put</span> <span class="parent">/receivers/{receiverId}</span>/target</h4></div><div class="modal-body"><div class="alert alert-info"><p>Request a change to a Receiver&#39;s subscription (deprecated)</p></div><ul class="nav nav-tabs"><li class="active"><a href="#receivers__receiverid__target_put_request" data-toggle="tab">Request</a></li><li><a href="#receivers__receiverid__target_put_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="receivers__receiverid__target_put_request"><h3>URI Parameters</h3><ul><li><strong>receiverId</strong>: <em><span class="required">required</span>(string - pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$)</em></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the possible requests to a Node&#39;s Receiver target resource",
+  "title": "Receiver target resource",
+  "oneOf": [
+    { "$ref": "sender.json" },
+    {
+      "type": "object",
+      "description": "Describes an empty object",
+      "title": "Empty object schema",
+      "additionalProperties": false,
+      "properties": {
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-senderid-get-200.json</code></pre></div></div><div class="tab-pane" id="receivers__receiverid__target_put_response"><h2>HTTP status code <a href="http://httpstatus.es/202" target="_blank">202</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the possible requests to a Node&#39;s Receiver target resource",
+  "title": "Receiver target resource",
+  "oneOf": [
+    { "$ref": "sender.json" },
+    {
+      "type": "object",
+      "description": "Describes an empty object",
+      "title": "Empty object schema",
+      "additionalProperties": false,
+      "properties": {
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Example</strong>:</p><div class="examples"><pre><code>Can not resolve ../examples/nodeapi-senderid-get-200.json</code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Returned when the PUT request is incorrectly formatted or missing mandatory attributes</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Returned when the requested Receiver ID does not exist</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/409" target="_blank">409</a></h2><p>Returned when the requested Receiver ID exists at a higher API version, and the resource cannot be conformed to the requested API version. The correct API version is identified via the Location header.</p><h3>Headers</h3><ul><li><strong>Location</strong>: <em><span class="required">required</span>(string)</em><p><strong>Example</strong>:</p><div class="examples"><pre><code>/x-nmos/node/{version}/receivers/1eb53d65-ac83-441c-86f6-9b27df30ef0c/target</code></pre></div></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/501" target="_blank">501</a></h2><p>This feature has not been implemented due to deprecation</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: json</p><p><strong>Content</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Describes the standard error response which is returned with HTTP codes 400 and above",
+  "title": "Error response",
+  "required": [
+    "code",
+    "error",
+    "debug"
+  ],
+  "properties": {
+    "code": {
+      "description": "HTTP error code",
+      "type": "integer",
+      "minimum": 400,
+      "maximum": 599
+    },
+    "error": {
+      "description": "Human readable message which is suitable for user interface display, and helpful to the user",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Debug information which may assist a programmer working with the API",
+      "type": ["null", "string"]
+    }
+  }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#">Base</a></li><li><a href="#self">Self</a></li><li><a href="#sources">Sources</a></li><li><a href="#flows">Flows</a></li><li><a href="#devices">Devices</a></li><li><a href="#senders">Senders</a></li><li><a href="#receivers">Receivers</a></li></ul></div></div></div></div></body></html>
