@@ -65,7 +65,7 @@ traits:
     description: APIリソースは、リクエストがデフォルトで返すよりも古いマイナーAPIのバージョンにマッチするデータの返却をサポートする。
     queryParameters:
       query.downgrade:
-        description: レジストリ内にリソースが存在する場合には、最小のAPIバージョンのリソースを返す
+        description: レジストリ内にリソースが存在する場合には、最小のAPIバージョンのリソースを返す。
         type: string
         pattern: "^v[0-9]+.[0-9]+$"
     responses:
@@ -74,40 +74,40 @@ traits:
       501:
         description: 指定されたクエリパラメータは、現在のところこの実装ではサポートされていません。
   rql:
-    description: This resource MAY support advanced query formats using the Resource Query Language (RQL) syntax
+    description: （推奨）このリソースは、Resource Query Language (RQL) 構文を用いた高度なクエリフォーマットをサポートしてもよい[MAY]。
     queryParameters:
       query.rql:
-        description: RQL format string indicating the query to be performed, such as 'and(eq(format,urn:x-nmos:format:video),in(tags.location,(Salford,London)))'. Strings used as filter values MUST be URL encoded.
+        description: （必須）'and(eq(format, urn:x-nmos:format:video), in(tags.location,(Salford, London)))'など、実行するクエリを示すRQL形式の文字列。フィルタ値として使用される文字列は、URLエンコードする必要があります。
         type: string
     responses:
       400:
-        description: The server refuses to perform the query as it would be too resource intensive.
+        description: リソースが多すぎるため、サーバーはクエリの実行を拒否します。
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在のところこの実装ではサポートされていません。
   ancestry:
-    description: This resource MAY support ancestry tracking whereby an ID is traced through 'parents' attributes to find and return all related resources
+    description: （推奨）このリソースは、ID が 'parents' 属性を介してトレースされ、関連するすべてのリソースを見つけて返すことができるようにするための ancestry トラッキングをサポートしてもよい[MAY]。
     queryParameters:
       query.ancestry_id:
-        description: UUID of the Source or Flow for which the ancestry is to be tracked
+        description: 系統を追跡するSourceまたはFlowのUUID。
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
       query.ancestry_type:
-        description: The type of ancestry query to perform, whether searching for 'parents' or 'children' of the specified resource
+        description: 指定されたリソースの 'parents'（親） と 'children'（子） のどちらを検索するかを指定します。
         type: string
         enum: ["parents", "children"]
       query.ancestry_generations:
-        description: The maximum number of generations to search through before returning the set of results. If this is not set, the server may use a default or fail to return results due to the request being too resource intensive
+        description: 結果のセットを返す前に検索する最大の世代数です。これが設定されていない場合、サーバはデフォルトを使用したり、 リクエストがリソースを消費しすぎて結果を返すのに失敗する可能性があります。
         type: integer
     responses:
       200:
         headers:
           X-Ancestry-Generations:
-            description: Identifies the number of ancestry generations being searched through. If 'query.ancestry_generations' is not specified by the user this should be returned as the server defined default.
+            description: 検索対象の系統を遡るための世代数を指定します。query.ancestry_generations' がユーザによって指定されていない場合は、サーバ定義のデフォルト値として返されます。
             type: integer
       400:
-        description: The server refuses to perform the query as it would be too resource intensive.
+        description: リソースが多すぎるため、サーバーはクエリの実行を拒否します。
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在のところこの実装ではサポートされていません。
 documentation:
   - title: 概要
     content: |
@@ -135,8 +135,8 @@ documentation:
   get:
     is: [paged, rql, downgrade]
     description: |
-    ノードを一覧表示します。
-      NB: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
+      Nodes の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -159,18 +159,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Node
+      description: 一つの Node を取得する
       responses:
         200:
           body:
             example: !include ../examples/queryapi-nodeid-get-200.json
             type: Node
         404:
-          description: Returned when the requested Node ID does not exist
+          description: 要求されたノード ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Node ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Node ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -181,8 +181,8 @@ documentation:
   get:
     is: [paged, rql, ancestry, downgrade]
     description: |
-      List Sources.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+    　Sources の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -195,7 +195,7 @@ documentation:
           example: !include ../examples/queryapi-sources-get-200.json
           type: Sources
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{sourceId}:
@@ -205,18 +205,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Source
+      description: 一つの Source を取得する
       responses:
         200:
           body:
             example: !include ../examples/queryapi-sourceid-get-200.json
             type: Source
         404:
-          description: Returned when the requested Source ID does not exist
+          description: 要求された Source ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Source ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Source ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -227,8 +227,8 @@ documentation:
   get:
     is: [paged, rql, ancestry, downgrade]
     description: |
-      List Flows.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+      Flows の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -241,7 +241,7 @@ documentation:
           example: !include ../examples/queryapi-flows-get-200.json
           type: Flows
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{flowId}:
@@ -251,18 +251,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Flow
+      description: 一つの Flow を取得する
       responses:
         200:
           body:
             example: !include ../examples/queryapi-flowid-get-200.json
             type: Flow
         404:
-          description: Returned when the requested Flow ID does not exist
+          description: 要求された Flow ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Flow ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Flow ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -273,8 +273,8 @@ documentation:
   get:
     is: [paged, rql, downgrade]
     description: |
-      List Devices.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+      Devices の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -287,7 +287,7 @@ documentation:
           example: !include ../examples/queryapi-devices-get-200.json
           type: Devices
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{deviceId}:
@@ -297,18 +297,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Device
+      description: 一つの Device を取得する 
       responses:
         200:
           body:
             example: !include ../examples/queryapi-deviceid-get-200.json
             type: Device
         404:
-          description: Returned when the requested Device ID does not exist
+          description: 要求された Device ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Device ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Device ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -319,8 +319,8 @@ documentation:
   get:
     is: [paged, rql, downgrade]
     description: |
-      List Senders.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+      Senders の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -333,7 +333,7 @@ documentation:
           example: !include ../examples/queryapi-senders-get-200.json
           type: Senders
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{senderId}:
@@ -343,18 +343,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Sender
+      description:  一つの Sender を取得する
       responses:
         200:
           body:
             example: !include ../examples/queryapi-senderid-get-200.json
             type: Sender
         404:
-          description: Returned when the requested Sender ID does not exist
+          description: 要求された Sender ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Sender ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Sender ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -365,8 +365,8 @@ documentation:
   get:
     is: [paged, rql, downgrade]
     description: |
-      List Receivers.
-      NB: Query parameters should be implemented for all permitted resource attributes.
+      Receivers の一覧表示
+      注意: クエリパラメータは、許可されているすべてのリソース属性に実装する必要があります。
     queryParameters:
       id:
       version:
@@ -379,7 +379,7 @@ documentation:
           example: !include ../examples/queryapi-receivers-get-200.json
           type: Receivers
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   /{receiverId}:
@@ -389,18 +389,18 @@ documentation:
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
       is: [downgrade]
-      description: Get a single Receiver
+      description: 一つの Receiver を取得する
       responses:
         200:
           body:
             example: !include ../examples/queryapi-receiverid-get-200.json
             type: Receiver
         404:
-          description: Returned when the requested Receiver ID does not exist
+          description: 要求された Receiver ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Receiver ID exists in the registry at a lower API version and a query downgrade has not been requested, or the requested downgrade does not extend as far as the resource's API version. The correct API version is identified via the Location header.
+          description: 要求された Receiver ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -409,12 +409,12 @@ documentation:
 /subscriptions:
   displayName: Subscriptions
   options:
-    description: A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes
+    description: オリジン間リソース共有（CORS）を利用する上で、一般的に使用されるプレフライトチェックです（CORSプロトコルを理解していて準備がされていることを、特定のメソッドとヘッダーを使用してチェック）
     responses:
       200:
       403:
   post:
-    description: Create a websocket subscription to an API resource
+    description: APIリソースへのWebSocketサブスクリプションを作成します。
     body:
       example: !include ../examples/queryapi-subscriptions-post-request.json
       type: !include schemas/queryapi-subscriptions-post-request.json
@@ -434,16 +434,16 @@ documentation:
           Location:
             example: /x-nmos/query/{version}/subscriptions/7c903667-7113-4a8f-8865-1c63f9070a9e
       400:
-        description: Returned when the POST request is incorrectly formatted, missing mandatory attributes or an attribute is invalid given the API's configuration
+        description: POSTリクエストの形式が正しくない場合や必須属性が欠落している場合、またはAPIの構成で属性が無効な場合に返されます
         body:
           type: ErrorSchema
       501:
-        description: The query parameters specified are not currently supported by this implementation.
+        description: 指定されたクエリパラメータは、現在この実装ではサポートされていません。
         body:
           type: ErrorSchema
   get:
     is: [paged]
-    description: List active connections to websockets providing real-time updates on resource changes (for debug use only)
+    description: リソースの変更に関するリアルタイムの更新を提供するWebSocketへのアクティブな接続を一覧表示します（デバッグ専用）
     responses:
       200:
         body:
@@ -455,43 +455,43 @@ documentation:
         type: string
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     get:
-      description: Get a single subscription (for debug use only)
+      description: 一つの subscription を取得します（デバッグ専用）
       responses:
         200:
           body:
             example: !include ../examples/queryapi-subscriptionid-get-200.json
             type: !include schemas/queryapi-subscription-response.json
         404:
-          description: Returned when the requested Subscription ID does not exist
+          description: 要求された Subscription ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Subscription ID exists in the registry at a different API version. The correct API version is identified via the Location header.
+          description: 要求された Subscription ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
             Location:
               example: /x-nmos/query/{version}/subscriptions/7c903667-7113-4a8f-8865-1c63f9070a9e
     options:
-      description: A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes
+      description: オリジン間リソース共有（CORS）を利用する上で、一般的に使用されるプレフライトチェックです（CORSプロトコルを理解していて準備がされていることを、特定のメソッドとヘッダーを使用してチェック）
       responses:
         200:
         403:
     delete:
-      description: Delete a single subscription
+      description: 一つの subscription を削除します
       responses:
         204:
-          description: The expected response, indicating 'No Content' following the DELETE
+          description: DELETEの後に 'No Content' を示す応答が期待されます。
         403:
-          description: Returned when a DELETE request is made against a non-persistent subscription which is managed by the Query API and cannot be deleted
+          description: Query APIによって管理されているので削除することができない、非永続型のサブスクリプションに対して、DELETEリクエストが行われた場合に返されます。
           body:
             type: ErrorSchema
         404:
-          description: Returned when the requested Subscription ID does not exist
+          description:  要求された Subscription ID が存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the requested Subscription ID exists in the registry at a different API version. The correct API version is identified via the Location header.
+          description: 要求された Subscription ID がより低いAPIバージョンのレジストリに存在し、クエリのダウングレードが要求されていない場合、または要求されたダウングレードがリソースのAPIバージョンまで拡張されていない場合に返されます。正しいAPIバージョンは、Locationヘッダーを介して識別されます。
           body:
             type: ErrorSchema
           headers:
