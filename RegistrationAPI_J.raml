@@ -10,16 +10,20 @@ mediaType: application/json
 types:
   ErrorSchema: !include schemas/error.json
 documentation:
-  - title: Overview
+  - title: 概要
     content: |
-      The Registration API is exposed by NMOS discovery Nodes. It is used to publish data to the distributed registry, which can then be queried via the Query API. In smaller deployments where no distributed registry is available, the Registration API is not used and discovery responsibilities fall to individual Nodes which choose to implement Peer to Peer specification. The Registration API is a Write Only API.
+      Registration APIは、NMOS discovery Nodesによって公開されています。
+      これは、割り当てられてたレジストリにデータを公開するために使用され、Query APIを介して問い合わせを行うことができます。
+      分散レジストリが利用できない小規模なデプロイメントでは、Registration APIは使用されず、ディスカバリーの責任はPeer to Peer仕様を実装することを選択した個々のノードに委ねられます。
+      Registration API は Write Only API （書き込み専用）です。
   - title: Further Documentation
     content: |
-      Further normative documentation covering the behaviour of this API is contained in the [docs](../docs) folder of this repository.
+      このAPIの動作をカバーするその他の規範的なドキュメントは、このリポジトリのdocsフォルダに含まれています。 
+      （https://amwa-tv.github.io/nmos-discovery-registration/tags/v1.3/docs/
 /:
   displayName: Base
   get:
-    description: List of paths available from this API
+    description: このAPIから利用可能なパスのリスト
     responses:
       200:
         body:
@@ -28,12 +32,12 @@ documentation:
 /resource:
   displayName: Resource
   options:
-    description: A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes
+    description: オリジン間リソース共有（CORS）を利用する上で、一般的に使用されるプレフライトチェックです（CORSプロトコルを理解していて準備がされていることを、特定のメソッドとヘッダーを使用してチェック）
     responses:
       200:
       403:
   post:
-    description: Create or update a registered resource
+    description: 登録済みリソースを作成または更新する
     body:
       example: !include ../examples/registrationapi-resource-post-request.json
       type: !include schemas/registrationapi-resource-post-request.json
@@ -45,7 +49,7 @@ documentation:
         headers:
           Location:
             example: /x-nmos/registration/{version}/resource/nodes/3b8be755-08ff-452b-b217-c9151eb21193
-        description: The expected response for an update operation on an existing registered resource
+        description: 既存の登録済みリソースに対する更新操作の予想される応答です。
       201:
         body:
           example: !include ../examples/registrationapi-resource-post-200.json
@@ -53,13 +57,13 @@ documentation:
         headers:
           Location:
             example: /x-nmos/registration/{version}/resource/nodes/3b8be755-08ff-452b-b217-c9151eb21193
-        description: The expected response for a create operation performed for a previously unregistered resource
+        description: まだ登録されていないリソースに対して実行された作成操作の予想される応答です。
       400:
-        description: Returned when the POST request is incorrectly formatted, missing mandatory attributes or breaches another condition which a Node is unlikely to be able to automatically correct.
+        description: POSTリクエストの形式が正しくない場合や必須属性が欠落している場合、またはAPIの構成で属性が無効な場合に返されます
         body:
           type: ErrorSchema
       409:
-        description: Returned when the resource already exists in the registry at a different API version. The correct API version is identified via the Location header.
+        description: リソースが既に異なるAPIバージョンでレジストリに存在している場合に返されます。正しいAPIバージョンはLocationヘッダで識別されます。
         body:
           type: ErrorSchema
         headers:
@@ -81,39 +85,39 @@ documentation:
           "receivers"
         ]
     options:
-      description: A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes
+      description: オリジン間リソース共有（CORS）を利用する上で、一般的に使用されるプレフライトチェックです（CORSプロトコルを理解していて準備がされていることを、特定のメソッドとヘッダーを使用してチェック）
       responses:
         200:
         403:
     delete:
-      description: Delete a registered resource
+      description: 登録済みのリソースを削除します。
       responses:
         204:
-          description: The expected response, indicating 'No Content' following the DELETE
+          description: DELETEの後に 'No Content' を示す応答が期待されます。
         404:
-          description: Returned when the requested resource does not exist
+          description: 要求されたリソースが存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the resource exists in the registry at a different API version. The correct API version is identified via the Location header.
+          description: リソースが既に異なるAPIバージョンでレジストリに存在している場合に返されます。正しいAPIバージョンはLocationヘッダで識別されます。
           body:
             type: ErrorSchema
           headers:
             Location:
               example: /x-nmos/registration/{version}/resource/nodes/3b8be755-08ff-452b-b217-c9151eb21193
     get:
-      description: Show a registered resource (for debug use only)
+      description: 登録済みのリソースを表示します。（デバッグ専用）
       responses:
         200:
           body:
             example: !include ../examples/registrationapi-resource-get-200.json
             type: !include schemas/registrationapi-resource-response.json
         404:
-          description: Returned when the requested resource does not exist
+          description: 要求されたリソースが存在しない場合に返されます。
           body:
             type: ErrorSchema
         409:
-          description: Returned when the resource exists in the registry at a different API version. The correct API version is identified via the Location header.
+          description: リソースが既に異なるAPIバージョンでレジストリに存在している場合に返されます。正しいAPIバージョンはLocationヘッダで識別されます。
           body:
             type: ErrorSchema
           headers:
@@ -126,41 +130,41 @@ documentation:
       type: string
       pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
   options:
-    description: A pre-flight check generally used for Cross-Origin Resource Sharing (CORS) purposes
+    description:  オリジン間リソース共有（CORS）を利用する上で、一般的に使用されるプレフライトチェックです（CORSプロトコルを理解していて準備がされていることを、特定のメソッドとヘッダーを使用してチェック）
     responses:
       200:
       403:
   post:
-    description: Update Node health
+    description: ノードの状態を更新します。
     responses:
       200:
         body:
           example: !include ../examples/registrationapi-health-post-200.json
           type: !include schemas/registrationapi-health-response.json
       404:
-        description: Returned when the requested Node does not exist or has been garbage collected
+        description:  要求されたリソースが存在しない場合に返されます。
         body:
           type: ErrorSchema
       409:
-        description: Returned when the requested Node exists in the registry but at a different API version. The correct API version is identified via the Location header.
+        description: リソースが既に異なるAPIバージョンでレジストリに存在している場合に返されます。正しいAPIバージョンはLocationヘッダで識別されます。
         body:
           type: ErrorSchema
         headers:
           Location:
             example: /x-nmos/registration/{version}/health/nodes/3b8be755-08ff-452b-b217-c9151eb21193
   get:
-    description: Show a Node's health (for debug use only)
+    description: ノードの状態を表示します。（デバッグ専用）
     responses:
       200:
         body:
           example: !include ../examples/registrationapi-health-get-200.json
           type: !include schemas/registrationapi-health-response.json
       404:
-        description: Returned when the requested Node does not exist or has been garbage collected
+        description:  要求されたリソースが存在しない場合に返されます。
         body:
           type: ErrorSchema
       409:
-        description: Returned when the requested Node exists in the registry but at a different API version. The correct API version is identified via the Location header.
+        description: リソースが既に異なるAPIバージョンでレジストリに存在している場合に返されます。正しいAPIバージョンはLocationヘッダで識別されます。
         body:
           type: ErrorSchema
         headers:
